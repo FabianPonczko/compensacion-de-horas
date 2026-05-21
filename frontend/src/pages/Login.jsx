@@ -10,6 +10,8 @@ import { useAuth } from '../hooks/useAuth';
 
 import { Link } from 'react-router-dom';
 
+import { getUserFromToken } from '../utils/auth';
+
 export default function Login() {
   const navigate = useNavigate();
 
@@ -23,6 +25,24 @@ export default function Login() {
   const [loading, setLoading] =
     useState(false);
 
+    // ======================================
+  // COMPROBAR SI YA ESTÁ LOGEADO AL CARGAR
+  // ======================================
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    
+    if (token) {
+      const user = getUserFromToken(token);
+      
+      if (user) {
+        // Opcional: Si tu useAuth necesita el usuario al recargar, puedes pasárselo aquí
+        // login(user); 
+        
+        navigate('/dashboard', { replace: true });
+      }
+    }
+  }, [navigate]);
+  
   // ======================================
   // HANDLE CHANGE
   // ======================================
