@@ -9,9 +9,9 @@ export default function MainLayout({
       <Sidebar />
 
       <div className="md:ml-64">
-        <Navbar />
+        {/* <Navbar /> */}
 
-        <main className="p-6">
+        <main className="p-6 mt-14  md:mt-0">
           {children}
         </main>
       </div>

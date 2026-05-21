@@ -155,7 +155,8 @@ export default function Registros() {
                 </thead>
 
                 <tbody>
-                  {registros.map(
+                  {console.log("registros",registros)}
+                  {[...registros].sort((a, b) => new Date(a.fecha) - new Date(b.fecha)).map(
                     (registro) => (
                       <tr
                         key={registro._id}

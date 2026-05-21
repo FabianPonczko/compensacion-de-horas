@@ -122,7 +122,7 @@ export const generarPDFReporte = ({
   // ==========================================
 
   const registrosData =
-    (registros.registros || []).map(
+    (registros?.registros ?[...registros.registros].sort((a, b) => new Date(a.fecha) - new Date(b.fecha)) : []).map(
       (registro) => [
         registro.fecha,
 
@@ -253,9 +253,9 @@ export const generarExcelReporte =
     // ==========================================
     // HOJA REGISTROS
     // ==========================================
-console.log("sabado",registros.registros[0].sabadoAsignado.fecha)
+
     const registrosData =
-  (registros.registros || []).map(
+  (registros?.registros ?[...registros.registros].sort((a, b) => new Date(a.fecha) - new Date(b.fecha)) : []).map(
     (registro) => ({
       
       Fecha:
