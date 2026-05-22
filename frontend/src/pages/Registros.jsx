@@ -85,7 +85,7 @@ export default function Registros() {
   // ======================================
 
   return (
-    <MainLayout>
+    <MainLayout isLoading={loading}>
       <div className="space-y-6">
         {/* HEADER */}
         <div>
