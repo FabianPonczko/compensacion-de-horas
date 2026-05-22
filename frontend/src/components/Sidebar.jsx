@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState ,useEffect} from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, LogOut } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth'; // Importamos tu hook
@@ -13,8 +13,25 @@ const links = [
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const { user, logout } = useAuth(); // Obtenemos user y logout
+  const [isVisible, setIsVisible] = useState(true); // Controla la visibilidad del header
+  const [lastScrollY, setLastScrollY] = useState(0); // Guarda la última posición del scroll
   const location = useLocation();
   const navigate = useNavigate();
+
+   // Efecto para escuchar el scroll del usuario
+  useEffect(() => {
+    const controlNavbar = () => {
+      if (window.scrollY > lastScrollY && window.scrollY > 50) {
+        setIsVisible(false); // Oculta si baja y pasó los 50px
+      } else {
+        setIsVisible(true);  // Muestra si sube
+      }
+      setLastScrollY(window.scrollY);
+    };
+
+    window.addEventListener('scroll', controlNavbar);
+    return () => window.removeEventListener('scroll', controlNavbar);
+  }, [lastScrollY]);
 
   const handleLogout = () => {
     logout();
@@ -25,7 +42,7 @@ export default function Sidebar() {
     <div className="flex flex-col h-full">
       <div className="p-6 border-b border-gray-800 flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold text-white">Banco Horas</h1>
+          <h1 className="text-2xl font-bold text-white">Banco de Horas</h1>
           <p className="text-xs text-gray-400 mt-1">{user?.nombre}</p>
         </div>
         <button className="md:hidden text-white" onClick={() => setIsOpen(false)}>
@@ -65,9 +82,11 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* Header móvil */}
-      <div className="md:hidden fixed top-0 left-0 right-0 bg-black p-4 flex justify-between items-center z-50">
-        <h1 className="text-xl font-bold text-white">Banco Horas</h1>
+      {/* Header móvil con animación de transición */}
+      <div className={`md:hidden fixed top-0 left-0 right-0 bg-black p-4 flex justify-between items-center z-50 transition-transform duration-300 ${
+        isVisible ? 'translate-y-0' : '-translate-y-full'
+      }`}>
+        <h1 className="text-xl font-bold text-white">Banco de Horas</h1>
         <button onClick={() => setIsOpen(true)} className="text-white">
           <Menu size={28} />
         </button>
