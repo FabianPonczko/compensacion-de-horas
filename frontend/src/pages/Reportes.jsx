@@ -3,6 +3,8 @@ import {
   useState,
 } from 'react';
 
+import dayjs from 'dayjs';
+
 import toast from 'react-hot-toast';
 
 import MainLayout from '../layouts/MainLayout';
@@ -256,9 +258,11 @@ export default function Reportes() {
                       className="border-b"
                     >
                       <td className="p-3">
-                        {new Date(
+                       {dayjs(
                           registro.fecha
-                        ).toLocaleDateString()}
+                        ).format(
+                          'DD/MM/YYYY'
+                        )}
                       </td>
 
                       <td className="p-3">

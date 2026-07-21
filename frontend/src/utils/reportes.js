@@ -124,7 +124,10 @@ export const generarPDFReporte = ({
   const registrosData =
     (registros?.registros ?[...registros.registros].sort((a, b) => new Date(a.fecha) - new Date(b.fecha)) : []).map(
       (registro) => [
-        registro.fecha,
+        
+        
+        dayjs(registro.fecha).format('DD/MM/YYYY'),
+      
 
         registro.horaEntrada,
 
@@ -143,9 +146,8 @@ export const generarPDFReporte = ({
     ? `De ${registro.horaCompensadaDesde} a ${registro.horaCompensadaHasta}`
     : '-',
 
-
-        registro.sabadoAsignado
-          ?.fecha || '-',
+         dayjs(registro.sabadoAsignado
+          ?.fecha).format('DD/MM/YYYY') || '-',
 
         registro.observaciones ||
           '-',
