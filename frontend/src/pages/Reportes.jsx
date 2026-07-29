@@ -14,7 +14,8 @@ import {obtenerRegistros} from '../services/registro.service';
 import {
   obtenerResumen,
   obtenerSabadosCompletados,
-  obtenerReporteSabado
+  obtenerReporteSabado,
+  obtenerReporteSeleccion
 } from "../services/reporte.service"
 
 import {
@@ -34,6 +35,15 @@ export default function Reportes() {
   const [sabados, setSabados] =
   useState([]);
 
+  const [seleccionados,
+  setSeleccionados] =
+  useState([]);
+
+  const [reporte,
+    setReporte] =
+    useState(null);
+
+  
   const [sabadoSeleccionado,
     setSabadoSeleccionado] =
     useState(null);
@@ -48,23 +58,80 @@ export default function Reportes() {
     cargarSabados();
   }, []);
 
-  const cargarSabados =
+  useEffect(() => {
+
+  if (
+    !seleccionados.length
+  ) {
+
+    setReporte(null);
+
+    return;
+
+  }
+
+  cargarReporte();
+
+}, [seleccionados]);
+
+
+  const cargarReporte =
     async () => {
       try {
         const response =
-          await obtenerSabadosCompletados();
-
-        setSabados(
-          response.sabados
-        );
-      } catch (error) {
+          await obtenerReporteSeleccion(
+            seleccionados
+          );
+        setReporte(response);
+        
+      } catch {
         toast.error(
-          'Error cargando sábados'
+          'Error generando reporte'
         );
-      } finally {
-        setLoading(false);
       }
+      
   };
+console.log("reporte",reporte)
+  const cargarSabados =
+  async () => {
+
+    try {
+
+      const response =
+        await obtenerSabadosCompletados();
+
+      setSabados(
+        response.sabados
+      );
+
+    } catch {
+
+      toast.error(
+        'Error al cargar sábados'
+      );
+
+    } finally {
+
+      setLoading(false);
+
+    }
+
+  };
+
+  const toggleSabado = (
+  id
+) => {
+
+  setSeleccionados(
+    (prev) =>
+      prev.includes(id)
+        ? prev.filter(
+            (x) => x !== id
+          )
+        : [...prev, id]
+  );
+
+};
 
   const seleccionarSabado =
   async (id) => {
@@ -86,6 +153,28 @@ export default function Reportes() {
           'Error cargando reporte',error.data
         );
       }
+    };
+
+  const seleccionarTodos =
+    () => {
+
+      setSeleccionados(
+
+        sabados.map(
+          (s) => s._id
+        )
+
+      );
+
+    };
+
+  const limpiarSeleccion =
+    () => {
+
+      setSeleccionados([]);
+
+      setReporte(null);
+
     };
 
   const cargarDatos =
@@ -126,8 +215,8 @@ export default function Reportes() {
 
   const exportarPDF = () => {
     generarPDFReporte({
-      registros: registro,
-      resumen: resumen,
+      registros: reporte.registros,
+      resumen: reporte.resumen,
       sabado:  sabados
     });
 
@@ -217,78 +306,101 @@ export default function Reportes() {
 
    {/* SABADOS COMPLETADOS */}
 
-<div className="bg-white p-6 rounded-2xl shadow-sm">
 
-  <h2 className="text-xl font-semibold mb-4">
-    Sábados Completados
-  </h2>
 
-  <table className="w-full">
+<div className="flex gap-3 mb-4">
+  <button
+    onClick={seleccionarTodos}
+    className="bg-blue-600 text-white px-4 py-2 rounded-xl"
+    >
+    Seleccionar todos
+  </button>
 
-    <thead>
+  <button
+    onClick={limpiarSeleccion}
+    className="bg-gray-500 text-white px-4 py-2 rounded-xl"
+    >
+    Limpiar
+  </button>
+</div>
 
-      <tr>
 
-        <th className="text-left p-3">
-          Fecha
-        </th>
+<table className="w-full">
 
-        <th className="text-left p-3">
-          Estado
-        </th>
+  <thead>
+    <tr className="border-b">
+    <th></th>
+    <th>Fecha</th>
+    <th>Estado</th>
+    <th>Horas</th>
+    </tr>
+  </thead>
 
-        <th className="text-left p-3">
-          Acción
-        </th>
+  <tbody>
+
+    {sabados.map(
+      (sabado)=>(
+      <tr
+        key={sabado._id}
+        className="border-b hover:bg-gray-50"
+      >
+      <td className="p-3">
+        <input
+          type="checkbox"
+          checked={
+            seleccionados.includes(
+              sabado._id
+            )
+          }
+          onChange={()=>
+            toggleSabado(
+              sabado._id
+            )
+          }
+        />
+      </td>
+
+      <td className="p-3">
+        
+        {dayjs(sabado.fecha).format('DD/MM/YYYY')}
+      
+      {/* {new Date(
+      sabado.fecha
+      ).toLocaleDateString()} */}
+
+      </td>
+
+      <td className="p-3">
+
+      {sabado.estado}
+
+      </td>
+
+      <td className="p-3">
+
+      {sabado.horasTotales} h
+
+      </td>
 
       </tr>
 
-    </thead>
+      ))
 
-    <tbody>
+  }
 
-      {sabados.map(
-        (sabado) => (
+  </tbody>
 
-          <tr
-            key={sabado._id}
-            className="border-b"
-          >
 
-            <td className="p-3">
-              {new Date(
-                sabado.fecha
-              ).toLocaleDateString()}
-            </td>
+</table>
 
-            <td className="p-3">
-              {sabado.estado}
-            </td>
 
-            <td className="p-3">
-
-              <button
-                onClick={() =>
-                  seleccionarSabado(
-                    sabado._id
-                  )
-                }
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg"
-              >
-                Seleccionar
-              </button>
-
-            </td>
-
-          </tr>
-
-        )
-      )}
-
-    </tbody>
-
-  </table>
-
+<div className="bg-blue-50 p-4 rounded-xl mb-6">
+  <h2 className="font-semibold">
+    Sábados seleccionados
+  </h2>
+  <p className="text-3xl font-bold">
+    {seleccionados.length}
+  </p>
 </div>
 
 
@@ -307,7 +419,7 @@ export default function Reportes() {
 
               <h3 className="text-3xl font-bold">
                 {
-                  resumen?.totalHoras
+                  reporte?.resumen?.totalHoras||0
                 }
                 h
               </h3>
@@ -320,7 +432,7 @@ export default function Reportes() {
 
               <h3 className="text-3xl font-bold">
                 {
-                  resumen?.totalExtras
+                  reporte?.resumen?.totalExtras||0
                 }
                 h
               </h3>
@@ -333,23 +445,13 @@ export default function Reportes() {
 
               <h3 className="text-3xl font-bold">
                 {
-                  resumen?.totalHorasCompensadas
+                  reporte?.resumen?.totalHorasCompensadas||0
                 }
                 h
               </h3>
             </div>
 
-            <div className="border rounded-xl p-4">
-              <p className="text-gray-500">
-                Sábados pendientes
-              </p>
-
-              <h3 className="text-3xl font-bold">
-                {
-                  resumen?.sabadosPendientes
-                }
-              </h3>
-            </div>
+            
           </div>
         </div>
 
@@ -382,7 +484,7 @@ export default function Reportes() {
               </thead>
 
               <tbody>
-                {registro?.registros.map(
+                {reporte?.registros.map(
                   (registro,index) => (
                     <tr 
                       key={index}

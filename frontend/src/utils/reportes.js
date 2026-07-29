@@ -122,7 +122,7 @@ export const generarPDFReporte = ({
   // ==========================================
 
   const registrosData =
-    (registros?.registros ?[...registros.registros].sort((a, b) => new Date(a.fecha) - new Date(b.fecha)) : []).map(
+    (registros ?[...registros].sort((a, b) => new Date(a.fecha) - new Date(b.fecha)) : []).map(
       (registro) => [
         
         
