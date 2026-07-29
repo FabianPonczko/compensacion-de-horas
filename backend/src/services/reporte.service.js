@@ -385,3 +385,17 @@ export const generarReporteExcel =
 
     res.end();
   };
+
+export const obtenerReporteSeleccion =
+  async (sabados) => {
+
+    const { data } =
+      await api.post(
+        '/reportes/seleccion',
+        {
+          sabados,
+        }
+      );
+
+    return data;
+  };

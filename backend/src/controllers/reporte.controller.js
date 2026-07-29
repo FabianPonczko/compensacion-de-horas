@@ -604,3 +604,117 @@ export const obtenerReporteSabado =
       });
     }
   };
+
+// ======================================================
+// REPORTE DE VARIOS SÁBADOS
+// POST /api/reportes/seleccion
+// ======================================================
+
+export const obtenerReporteSeleccion = async (
+  req,
+  res
+) => {
+  try {
+
+    const { sabados } = req.body;
+
+    if (
+      !sabados ||
+      !sabados.length
+    ) {
+      return res.status(400).json({
+        success: false,
+        message:
+          'Seleccione al menos un sábado',
+      });
+    }
+
+    const registros =
+      await RegistroDiario.find({
+        usuario: req.user._id,
+
+        sabadoAsignado: {
+          $in: sabados,
+        },
+      })
+        .populate(
+          'sabadoAsignado'
+        )
+        .sort({
+          fecha: 1,
+        });
+
+    const totalHoras =
+      registros.reduce(
+        (t, r) =>
+          t + r.horasTrabajadas,
+        0
+      );
+
+    const totalExtras =
+      registros.reduce(
+        (t, r) =>
+          t + r.horasExtras,
+        0
+      );
+
+    const totalCompensadas =
+      registros.reduce(
+        (t, r) =>
+          t +
+          (r.horasCompensadas ??
+            r.horasExtras),
+        0
+      );
+
+    const sabadosDetalle =
+      await SabadoCompensable.find({
+        _id: {
+          $in: sabados,
+        },
+      }).sort({
+        fecha: 1,
+      });
+
+    res.json({
+
+      success: true,
+
+      resumen: {
+
+        totalRegistros:
+          registros.length,
+
+        totalHoras,
+
+        totalExtras,
+
+        totalHorasCompensadas:
+          totalCompensadas,
+
+        cantidadSabados:
+          sabadosDetalle.length,
+      },
+
+      sabados:
+        sabadosDetalle,
+
+      registros,
+
+    });
+
+  } catch (error) {
+
+    console.error(error);
+
+    res.status(500).json({
+
+      success: false,
+
+      message:
+        error.message,
+
+    });
+
+  }
+};

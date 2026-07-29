@@ -6,6 +6,7 @@ import {
   obtenerReporteSabados,
     obtenerSabadosCompletados,
     obtenerReporteSabado, 
+    obtenerReporteSeleccion,
   descargarPDF,
   descargarExcel,
 } from '../controllers/reporte.controller.js';
@@ -78,6 +79,12 @@ router.get(
   '/sabado/:id',
   protect,
   obtenerReporteSabado
+);
+
+router.post(
+  '/seleccion',
+  protect,
+  obtenerReporteSeleccion
 );
 
 export default router;

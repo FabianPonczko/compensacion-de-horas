@@ -67,21 +67,23 @@ export default function Reportes() {
   };
 
   const seleccionarSabado =
-    async (id) => {
+  async (id) => {
       try {
         const response =
           await obtenerReporteSabado(
             id
           );
 
-        setReporte(response);
+        // setReporte(response);
 
         setSabadoSeleccionado(
           response.sabado
         );
+        console.log("sabadoseleccionado",sabadoSeleccionado)
       } catch (error) {
+        console.log("error",error)
         toast.error(
-          'Error cargando reporte'
+          'Error cargando reporte',error.data
         );
       }
     };
@@ -124,8 +126,9 @@ export default function Reportes() {
 
   const exportarPDF = () => {
     generarPDFReporte({
-       registros:registro,
-       resumen: resumen,
+      registros: registro,
+      resumen: resumen,
+      sabado:  sabados
     });
 
     toast.success(
@@ -211,6 +214,84 @@ export default function Reportes() {
             Enviar WhatsApp
           </button>
         </div>
+
+   {/* SABADOS COMPLETADOS */}
+
+<div className="bg-white p-6 rounded-2xl shadow-sm">
+
+  <h2 className="text-xl font-semibold mb-4">
+    Sábados Completados
+  </h2>
+
+  <table className="w-full">
+
+    <thead>
+
+      <tr>
+
+        <th className="text-left p-3">
+          Fecha
+        </th>
+
+        <th className="text-left p-3">
+          Estado
+        </th>
+
+        <th className="text-left p-3">
+          Acción
+        </th>
+
+      </tr>
+
+    </thead>
+
+    <tbody>
+
+      {sabados.map(
+        (sabado) => (
+
+          <tr
+            key={sabado._id}
+            className="border-b"
+          >
+
+            <td className="p-3">
+              {new Date(
+                sabado.fecha
+              ).toLocaleDateString()}
+            </td>
+
+            <td className="p-3">
+              {sabado.estado}
+            </td>
+
+            <td className="p-3">
+
+              <button
+                onClick={() =>
+                  seleccionarSabado(
+                    sabado._id
+                  )
+                }
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg"
+              >
+                Seleccionar
+              </button>
+
+            </td>
+
+          </tr>
+
+        )
+      )}
+
+    </tbody>
+
+  </table>
+
+</div>
+
+
 
         {/* RESUMEN */}
         <div className="bg-white p-6 rounded-2xl shadow-sm">
