@@ -11,7 +11,11 @@ import MainLayout from '../layouts/MainLayout';
 
 import {obtenerRegistros} from '../services/registro.service';
 
-import {obtenerResumen} from "../services/reporte.service"
+import {
+  obtenerResumen,
+  obtenerSabadosCompletados,
+  obtenerReporteSabado
+} from "../services/reporte.service"
 
 import {
   generarPDFReporte,
@@ -26,6 +30,14 @@ export default function Reportes() {
   const [loading, setLoading] =
     useState(true);
 
+
+  const [sabados, setSabados] =
+  useState([]);
+
+  const [sabadoSeleccionado,
+    setSabadoSeleccionado] =
+    useState(null);
+
   // ======================================
   // CARGAR REPORTES
   // ======================================
@@ -33,7 +45,46 @@ export default function Reportes() {
   useEffect(() => {
     cargarDatos();
     cargarResumen()
+    cargarSabados();
   }, []);
+
+  const cargarSabados =
+    async () => {
+      try {
+        const response =
+          await obtenerSabadosCompletados();
+
+        setSabados(
+          response.sabados
+        );
+      } catch (error) {
+        toast.error(
+          'Error cargando sábados'
+        );
+      } finally {
+        setLoading(false);
+      }
+  };
+
+  const seleccionarSabado =
+    async (id) => {
+      try {
+        const response =
+          await obtenerReporteSabado(
+            id
+          );
+
+        setReporte(response);
+
+        setSabadoSeleccionado(
+          response.sabado
+        );
+      } catch (error) {
+        toast.error(
+          'Error cargando reporte'
+        );
+      }
+    };
 
   const cargarDatos =
     async () => {
@@ -66,7 +117,6 @@ export default function Reportes() {
       setLoading(false);
     }
   };
-  
   
     // ======================================
     // EXPORTAR PDF

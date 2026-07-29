@@ -4,6 +4,8 @@ import {
   obtenerResumen,
   obtenerReporteMensual,
   obtenerReporteSabados,
+    obtenerSabadosCompletados,
+    obtenerReporteSabado, 
   descargarPDF,
   descargarExcel,
 } from '../controllers/reporte.controller.js';
@@ -56,6 +58,26 @@ router.get(
   '/excel',
   protect,
   descargarExcel
+);
+
+// ==========================================
+// SÁBADOS COMPLETADOS
+// ==========================================
+
+router.get(
+  '/sabados-completados',
+  protect,
+  obtenerSabadosCompletados
+);
+
+// ==========================================
+// REPORTE DE UN SÁBADO
+// ==========================================
+
+router.get(
+  '/sabado/:id',
+  protect,
+  obtenerReporteSabado
 );
 
 export default router;

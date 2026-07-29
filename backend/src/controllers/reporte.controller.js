@@ -489,3 +489,118 @@ export const descargarExcel =
       });
     }
   };
+
+// ====================
+// Sabado compemsables
+//=====================
+
+export const obtenerSabadosCompletados = async (
+  req,
+  res
+) => {
+  try {
+    const sabados =
+      await SabadoCompensable.find({
+        usuario: req.user._id,
+        estado: 'Completado',
+      }).sort({
+        fecha: -1,
+      });
+
+    res.json({
+      success: true,
+      total: sabados.length,
+      sabados,
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message:
+        'Error al obtener los sábados completados',
+    });
+  }
+};
+
+export const obtenerReporteSabado =
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+
+      const sabado =
+        await SabadoCompensable.findOne({
+          _id: id,
+          usuario: req.user._id,
+        });
+
+      if (!sabado) {
+        return res.status(404).json({
+          success: false,
+          message:
+            'Sábado no encontrado',
+        });
+      }
+
+      const registros =
+        await RegistroDiario.find({
+          usuario: req.user._id,
+          sabadoAsignado: id,
+        }).sort({
+          fecha: 1,
+        });
+
+      const totalHoras =
+        registros.reduce(
+          (total, registro) =>
+            total +
+            registro.horasTrabajadas,
+          0
+        );
+
+      const totalExtras =
+        registros.reduce(
+          (total, registro) =>
+            total +
+            registro.horasExtras,
+          0
+        );
+
+      const totalCompensadas =
+        registros.reduce(
+          (total, registro) =>
+            total +
+            (registro.horasCompensadas ||
+              registro.horasExtras),
+          0
+        );
+
+      res.json({
+        success: true,
+
+        sabado,
+
+        resumen: {
+          totalRegistros:
+            registros.length,
+
+          totalHoras,
+
+          totalExtras,
+
+          totalHorasCompensadas:
+            totalCompensadas,
+        },
+
+        registros,
+      });
+    } catch (error) {
+      console.error(error);
+
+      res.status(500).json({
+        success: false,
+        message:
+          'Error al obtener el reporte',
+      });
+    }
+  };

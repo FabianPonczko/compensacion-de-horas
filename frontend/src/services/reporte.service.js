@@ -28,6 +28,34 @@ export const obtenerResumen =
     
   };
 
+// ============================================
+// SÁBADOS COMPLETADOS
+// ============================================
+
+export const obtenerSabadosCompletados =
+  async () => {
+    const { data } =
+      await api.get(
+        '/reportes/sabados-completados'
+      );
+
+    return data;
+  };
+
+// ============================================
+// REPORTE POR SÁBADO
+// ============================================
+
+export const obtenerReporteSabado =
+  async (id) => {
+    const { data } =
+      await api.get(
+        `/reportes/sabado/${id}`
+      );
+
+    return data;
+  };
+
 // ======================================================
 // PDF
 // ======================================================
