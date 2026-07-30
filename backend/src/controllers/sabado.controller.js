@@ -210,7 +210,7 @@ export const actualizarSabado = async (
   try {
     const { id } = req.params;
 
-    const { fecha } = req.body;
+    const { fecha, presentado} = req.body;
 
     // ==========================================
     // BUSCAR SÁBADO
@@ -247,6 +247,16 @@ export const actualizarSabado = async (
       sabado.fecha = fecha;
     }
 
+    // ==========================================
+    // ASIGNAR CAMPO PRESENTADO (NUEVO)
+    // ==========================================
+    
+    // Si viene la propiedad 'presentado' en el body, la actualizamos
+    if (presentado !== undefined) {
+      sabado.presentado = presentado;
+    }
+
+    
     // ==========================================
     // GUARDAR CAMBIOS
     // ==========================================

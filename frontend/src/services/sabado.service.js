@@ -41,7 +41,7 @@ export const presentarSabado =
   async (id) => {
     const { data } = await api.put(
       `/sabados/${id}`, 
-      { presentado: "x" } // Enviamos solo el campo que cambió
+      { presentado: "X" } // Enviamos solo el campo que cambió
     );
 
     return data;
