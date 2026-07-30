@@ -307,96 +307,96 @@ console.log("reporte",reporte)
    {/* SABADOS COMPLETADOS */}
 
 
+<div className="bg-white p-6 rounded-2xl shadow-sm">
+  <div className="flex gap-3 mb-4">
+    <button
+      onClick={seleccionarTodos}
+      className="bg-blue-600 text-white px-4 py-2 rounded-xl"
+      >
+      Seleccionar todos
+    </button>
 
-<div className="flex gap-3 mb-4">
-  <button
-    onClick={seleccionarTodos}
-    className="bg-blue-600 text-white px-4 py-2 rounded-xl"
-    >
-    Seleccionar todos
-  </button>
+    <button
+      onClick={limpiarSeleccion}
+      className="bg-gray-500 text-white px-4 py-2 rounded-xl"
+      >
+      Limpiar
+    </button>
+  </div>
 
-  <button
-    onClick={limpiarSeleccion}
-    className="bg-gray-500 text-white px-4 py-2 rounded-xl"
-    >
-    Limpiar
-  </button>
+
+  <table className="w-full">
+
+    <thead>
+      <tr className="border-b">
+      <th></th>
+      <th>Fecha</th>
+      <th>Estado</th>
+      <th>Horas</th>
+      <th>Presentado</th>
+      </tr>
+    </thead>
+
+    <tbody>
+
+      {sabados.map(
+        (sabado)=>(
+        <tr
+          key={sabado._id}
+          className="border-b hover:bg-gray-50"
+        >
+        <td className="p-3">
+          <input
+            type="checkbox"
+            checked={
+              seleccionados.includes(
+                sabado._id
+              )
+            }
+            onChange={()=>
+              toggleSabado(
+                sabado._id
+              )
+            }
+          />
+        </td>
+
+        <td className="p-3">
+          {dayjs(sabado.fecha).format('DD/MM/YYYY')}
+        
+        {/* {new Date(
+        sabado.fecha
+        ).toLocaleDateString()} */}
+
+        </td>
+
+        <td className="p-3">
+          {sabado.estado}
+        </td>
+
+        <td className="p-3">
+          {sabado.horasTotales} h
+        </td>
+
+        <td className="p-3">
+          {sabado.presentado}
+        </td>
+
+        </tr>
+
+        ))
+
+    }
+
+    </tbody>
+
+
+  </table>
 </div>
 
-
-<table className="w-full">
-
-  <thead>
-    <tr className="border-b">
-    <th></th>
-    <th>Fecha</th>
-    <th>Estado</th>
-    <th>Horas</th>
-    </tr>
-  </thead>
-
-  <tbody>
-
-    {sabados.map(
-      (sabado)=>(
-      <tr
-        key={sabado._id}
-        className="border-b hover:bg-gray-50"
-      >
-      <td className="p-3">
-        <input
-          type="checkbox"
-          checked={
-            seleccionados.includes(
-              sabado._id
-            )
-          }
-          onChange={()=>
-            toggleSabado(
-              sabado._id
-            )
-          }
-        />
-      </td>
-
-      <td className="p-3">
-        
-        {dayjs(sabado.fecha).format('DD/MM/YYYY')}
-      
-      {/* {new Date(
-      sabado.fecha
-      ).toLocaleDateString()} */}
-
-      </td>
-
-      <td className="p-3">
-
-      {sabado.estado}
-
-      </td>
-
-      <td className="p-3">
-
-      {sabado.horasTotales} h
-
-      </td>
-
-      </tr>
-
-      ))
-
-  }
-
-  </tbody>
-
-
-</table>
-
-
-<div className="bg-blue-50 p-4 rounded-xl mb-6">
+ <div className="bg-white p-6 rounded-2xl shadow-sm">
   <h2 className="font-semibold">
-    Sábados seleccionados
+    Sabados seleccionados
   </h2>
   <p className="text-3xl font-bold">
     {seleccionados.length}
@@ -405,125 +405,129 @@ console.log("reporte",reporte)
 
 
 
-        {/* RESUMEN */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm">
-          <h2 className="text-xl font-semibold mb-6">
-            Resumen General
-          </h2>
+    {/* RESUMEN */}
+  {seleccionados.length > 0  && 
+    <div className="bg-white p-6 rounded-2xl shadow-sm">
+      <h2 className="text-xl font-semibold mb-6">
+        Resumen General
+      </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="border rounded-xl p-4">
-              <p className="text-gray-500">
-                Horas trabajadas
-              </p>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="border rounded-xl p-4">
+          <p className="text-gray-500">
+            Horas trabajadas
+          </p>
 
-              <h3 className="text-3xl font-bold">
-                {
-                  reporte?.resumen?.totalHoras||0
-                }
-                h
-              </h3>
-            </div>
-
-            <div className="border rounded-xl p-4">
-              <p className="text-gray-500">
-                Horas extra
-              </p>
-
-              <h3 className="text-3xl font-bold">
-                {
-                  reporte?.resumen?.totalExtras||0
-                }
-                h
-              </h3>
-            </div>
-
-            <div className="border rounded-xl p-4">
-              <p className="text-gray-500">
-                Horas compensadas
-              </p>
-
-              <h3 className="text-3xl font-bold">
-                {
-                  reporte?.resumen?.totalHorasCompensadas||0
-                }
-                h
-              </h3>
-            </div>
-
-            
-          </div>
+          <h3 className="text-3xl font-bold">
+            {
+              reporte?.resumen?.totalHoras||0
+            }
+            h
+          </h3>
         </div>
 
-        {/* TABLA */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm">
-          <h2 className="text-xl font-semibold mb-4">
-            Registros
-          </h2>
+        <div className="border rounded-xl p-4">
+          <p className="text-gray-500">
+            Horas extra
+          </p>
 
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b">
-                  <th className="p-3 text-left">
-                    Fecha
-                  </th>
-
-                  <th className="p-3 text-left">
-                    Trabajadas
-                  </th>
-
-                  <th className="p-3 text-left">
-                    Extras
-                  </th>
-
-                  <th className="p-3 text-left">
-                    Observaciones
-                  </th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {reporte?.registros.map(
-                  (registro,index) => (
-                    <tr 
-                      key={index}
-                      className="border-b"
-                    >
-                      <td className="p-3">
-                       {dayjs(
-                          registro.fecha
-                        ).format(
-                          'DD/MM/YYYY'
-                        )}
-                      </td>
-
-                      <td className="p-3">
-                        {
-                          registro.horasTrabajadas
-                        }
-                        h
-                      </td>
-
-                      <td className="p-3">
-                        {
-                          registro.horasExtras
-                        }
-                        h
-                      </td>
-
-                      <td className="p-3">
-                        {registro.observaciones ||
-                          '-'}
-                      </td>
-                    </tr>
-                  )
-                )}
-              </tbody>
-            </table>
-          </div>
+          <h3 className="text-3xl font-bold">
+            {
+              reporte?.resumen?.totalExtras||0
+            }
+            h
+          </h3>
         </div>
+
+        <div className="border rounded-xl p-4">
+          <p className="text-gray-500">
+            Horas compensadas
+          </p>
+
+          <h3 className="text-3xl font-bold">
+            {
+              reporte?.resumen?.totalHorasCompensadas||0
+            }
+            h
+          </h3>
+        </div>
+
+        
       </div>
-    </MainLayout>
+    </div>
+  }
+    {/* TABLA */}
+    
+    {seleccionados.length > 0  && 
+    <div className="bg-white p-6 rounded-2xl shadow-sm">
+      <h2 className="text-xl font-semibold mb-4">
+        Registros
+      </h2>
+
+      <div className="overflow-x-auto">
+        <table className="w-full">
+          <thead>
+            <tr className="border-b">
+              <th className="p-3 text-left">
+                Fecha
+              </th>
+
+              <th className="p-3 text-left">
+                Trabajadas
+              </th>
+
+              <th className="p-3 text-left">
+                Extras
+              </th>
+
+              <th className="p-3 text-left">
+                Observaciones
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {reporte?.registros.map(
+              (registro,index) => (
+                <tr 
+                  key={index}
+                  className="border-b"
+                >
+                  <td className="p-3">
+                    {dayjs(
+                      registro.fecha
+                    ).format(
+                      'DD/MM/YYYY'
+                    )}
+                  </td>
+
+                  <td className="p-3">
+                    {
+                      registro.horasTrabajadas
+                    }
+                    h
+                  </td>
+
+                  <td className="p-3">
+                    {
+                      registro.horasExtras
+                    }
+                    h
+                  </td>
+
+                  <td className="p-3">
+                    {registro.observaciones ||
+                      '-'}
+                  </td>
+                </tr>
+              )
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+  </div>
+</MainLayout>
   );
 }

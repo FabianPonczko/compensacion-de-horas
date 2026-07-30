@@ -73,6 +73,15 @@ const sabadoCompensableSchema =
 
         default: 'Pendiente',
       },
+
+      //=====================================
+      //Presentacion
+      //=====================================
+      presentado:{
+        type:String,
+        default:"-"
+      },
+
     },
     {
       timestamps: true,

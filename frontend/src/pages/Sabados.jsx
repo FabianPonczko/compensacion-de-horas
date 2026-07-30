@@ -13,6 +13,7 @@ import {
   crearSabado,
   obtenerSabados,
   eliminarSabado,
+  presentarSabado
 } from '../services/sabado.service';
 
 export default function Sabados() {
@@ -113,6 +114,29 @@ export default function Sabados() {
     }
   };
 
+  const handlePresentarSabado = async (id) => {
+    const confirmar = window.confirm(
+      'Cambiar estado de presentado?'
+    );
+
+    if (!confirmar) return;
+
+    try {
+      await presentarSabado(id);
+
+      toast.success(
+        'Estado cambiado a presentado'
+      );
+
+      cargarSabados();
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message ||
+          'Error al actualizar estado de presentación'
+      );
+    }
+  };
+
   return (
     <MainLayout isLoading={loading}>
       <div className="space-y-6">
@@ -155,6 +179,7 @@ export default function Sabados() {
             <SabadosTable
               sabados={sabados}
               onDelete={handleDelete}
+              onPresentar={handlePresentarSabado}
             />
           )}
         </div>

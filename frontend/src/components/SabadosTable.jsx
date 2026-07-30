@@ -1,6 +1,7 @@
 export default function SabadosTable({
   sabados,
   onDelete,
+  onPresentar
 }) {
   return (
     <div className="overflow-x-auto">
@@ -27,6 +28,12 @@ export default function SabadosTable({
               Progreso
             </th>
 
+            <th className="p-3 text-left">
+              Acción
+            </th>
+            <th className="p-3 text-left">
+              Estado
+            </th>
             <th className="p-3 text-left">
               Acción
             </th>
@@ -88,6 +95,21 @@ export default function SabadosTable({
                   className="bg-red-500 text-white px-3 py-1 rounded-lg"
                 >
                   Eliminar
+                </button>
+              </td>
+              <td className="p-3">
+                {sabado.presentado}
+              </td>
+              <td className="p-3">
+                <button
+                  onClick={() =>
+                    onPresentar(
+                      sabado._id
+                    )
+                  }
+                  className="bg-blue-700 text-white px-3 py-1 rounded-lg"
+                >
+                  Presentado
                 </button>
               </td>
             </tr>
