@@ -364,7 +364,7 @@ console.log("reporte",reporte)
               {sabado.estado}
             </td>
             <td className="p-3">
-              {sabado.horasTotales} h
+              {sabado.horasTotales} 
             </td>
             <td className="p-3">
               {sabado.presentado}
