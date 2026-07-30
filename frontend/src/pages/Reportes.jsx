@@ -155,18 +155,16 @@ console.log("reporte",reporte)
       }
     };
 
-  const seleccionarTodos =
-    () => {
 
-      setSeleccionados(
+  const seleccionarTodos = () => {
+    // 1. Filtramos para dejar solo los que NO han sido presentados aún
+    const soloDisponibles = sabados.filter((s) => s.presentado !== 'X');
+    
+    // 2. Extraemos los IDs únicamente de esos registros disponibles
+    const idsValidos = soloDisponibles.map((s) => s._id);
 
-        sabados.map(
-          (s) => s._id
-        )
-
-      );
-
-    };
+    setSeleccionados(idsValidos);
+  };
 
   const limpiarSeleccion =
     () => {
@@ -323,75 +321,67 @@ console.log("reporte",reporte)
       Limpiar
     </button>
   </div>
-
-
-  <table className="w-full">
-
-    <thead>
-      <tr className="border-b">
-      <th></th>
-      <th>Fecha</th>
-      <th>Estado</th>
-      <th>Horas</th>
-      <th>Presentado</th>
-      </tr>
-    </thead>
-
-    <tbody>
-
-      {sabados.map(
-        (sabado)=>(
-        <tr
-          key={sabado._id}
-          className="border-b hover:bg-gray-50"
-        >
-        <td className="p-3">
-          <input
-            type="checkbox"
-            checked={
-              seleccionados.includes(
-                sabado._id
-              )
-            }
-            onChange={()=>
-              toggleSabado(
-                sabado._id
-              )
-            }
-          />
-        </td>
-
-        <td className="p-3">
-          {dayjs(sabado.fecha).format('DD/MM/YYYY')}
-        
-        {/* {new Date(
-        sabado.fecha
-        ).toLocaleDateString()} */}
-
-        </td>
-
-        <td className="p-3">
-          {sabado.estado}
-        </td>
-
-        <td className="p-3">
-          {sabado.horasTotales} h
-        </td>
-
-        <td className="p-3">
-          {sabado.presentado}
-        </td>
-
+  <div className="overflow-x-auto">
+    <table className="w-full">
+      <thead>
+        <tr className="border-b">
+        <th></th>
+        <th>Fecha</th>
+        <th>Estado</th>
+        <th>Horas</th>
+        <th>Presentado</th>
         </tr>
+      </thead>
 
-        ))
+      <tbody>
+        {sabados.map(
+          (sabado)=>{
+            const yaPresentado = sabado.presentado === 'X';
+            
+          return (
+            <tr
+            key={sabado._id}
+            className={`border-b ${yaPresentado ? 'font-bold bg-gray-50/50 text-gray-700' : 'hover:bg-gray-50'}`}
+            
+            >
+            <td className="p-3">
+              <input
+                type="checkbox"
+                disabled={yaPresentado}
+                checked={yaPresentado || seleccionados.includes(sabado._id)}
+                onChange={()=>toggleSabado(sabado._id)}
+                className="disabled:opacity-60 disabled:cursor-not-allowed"
+              />
+            </td>
+            <td className="p-3">
+              {dayjs(sabado.fecha).format('DD/MM/YYYY')}
+            
+            {/* {new Date(
+            sabado.fecha
+            ).toLocaleDateString()} */}
+            </td>
+            <td className="p-3">
+              {sabado.estado}
+            </td>
+            <td className="p-3">
+              {sabado.horasTotales} h
+            </td>
+            <td className="p-3">
+              {sabado.presentado}
+            </td>
 
-    }
+            </tr>
 
-    </tbody>
+          ) 
+        })
+
+      }
+
+      </tbody>
 
 
-  </table>
+    </table>
+  </div>  
 </div>
 
  <div className="bg-white p-6 rounded-2xl shadow-sm">

@@ -41,11 +41,17 @@ export default function SabadosTable({
         </thead>
 
         <tbody>
-          {sabados.map((sabado) => (
+          {sabados.map((sabado) => {
+            
+            const yaPresentado = sabado.presentado === 'X';
+
+          return(
+
             <tr
-              key={sabado._id}
-              className="border-b"
+            key={sabado._id}
+            className="border-b"
             >
+              {console.log("sabado",sabado)}
               <td className="p-3">
                 {sabado.fecha}
               </td>
@@ -97,23 +103,23 @@ export default function SabadosTable({
                   Eliminar
                 </button>
               </td>
+
               <td className="p-3">
                 {sabado.presentado}
               </td>
+
               <td className="p-3">
-                <button
-                  onClick={() =>
-                    onPresentar(
-                      sabado._id
-                    )
-                  }
-                  className="bg-blue-700 text-white px-3 py-1 rounded-lg"
-                >
-                  Presentado
-                </button>
+              <button
+                disabled={yaPresentado}
+                onClick={() => onPresentar(sabado._id)}
+                className="bg-blue-700 text-white px-3 py-1 rounded-lg font-medium transition-colors disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
+              >
+                {yaPresentado ? 'Presentado' : 'Presentar'}
+              </button>
               </td>
             </tr>
-          ))}
+          )})}
+          
         </tbody>
       </table>
 

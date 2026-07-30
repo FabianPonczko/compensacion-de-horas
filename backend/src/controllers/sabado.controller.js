@@ -139,6 +139,9 @@ export const obtenerSabados = async (
             sabado.horasRestantes) /
             sabado.horasTotales) *
           100,
+
+        presentado:
+          sabado.presentado
       })
     );
 
@@ -256,7 +259,7 @@ export const actualizarSabado = async (
       sabado.presentado = presentado;
     }
 
-    
+
     // ==========================================
     // GUARDAR CAMBIOS
     // ==========================================
