@@ -12,29 +12,29 @@ export default function SabadosTable({
               Fecha
             </th>
 
-            <th className="p-3 text-left">
+            <th className="p-3 text-center">
               Totales
             </th>
 
-            <th className="p-3 text-left">
+            <th className="p-3 text-center">
               Restantes
             </th>
 
-            <th className="p-3 text-left">
+            <th className="p-3 text-center">
               Estado
             </th>
 
-            <th className="p-3 text-left">
+            <th className="p-3 text-center">
               Progreso
             </th>
 
-            <th className="p-3 text-left">
+            <th className="p-3 text-center">
               Acción
             </th>
-            <th className="p-3 text-left">
+            <th className="p-3 text-center">
               Estado
             </th>
-            <th className="p-3 text-left">
+            <th className="p-3 text-center">
               Acción
             </th>
           </tr>
@@ -56,15 +56,15 @@ export default function SabadosTable({
                 {sabado.fecha}
               </td>
 
-              <td className="p-3">
+              <td className="p-3 text-center">
                 {sabado.horasTotales}h
               </td>
 
-              <td className="p-3">
+              <td className="p-3 text-center">
                 {sabado.horasRestantes}h
               </td>
 
-              <td className="p-3">
+              <td className="p-3 text-center">
                 <span
                   className={`px-3 py-1 rounded-full text-sm ${
                     sabado.estado ===
@@ -91,7 +91,7 @@ export default function SabadosTable({
                 </div>
               </td>
 
-              <td className="p-3">
+              <td className="p-3 text-center">
                 <button
                   onClick={() =>
                     onDelete(
@@ -104,7 +104,7 @@ export default function SabadosTable({
                 </button>
               </td>
 
-              <td className="p-3">
+              <td className="p-3 text-center">
                 {sabado.presentado}
               </td>
 

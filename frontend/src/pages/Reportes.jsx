@@ -328,8 +328,8 @@ console.log("reporte",reporte)
         <th></th>
         <th>Fecha</th>
         <th>Estado</th>
-        <th>Horas</th>
-        <th>Presentado</th>
+        <th className="px-4" >Horas</th>
+        <th className="px-4">Presentado</th>
         </tr>
       </thead>
 
@@ -344,7 +344,7 @@ console.log("reporte",reporte)
             className={`border-b ${yaPresentado ? 'font-bold bg-gray-50/50 text-gray-700' : 'hover:bg-gray-50'}`}
             
             >
-            <td className="p-3">
+            <td className="p-3 text-center">
               <input
                 type="checkbox"
                 disabled={yaPresentado}
@@ -353,20 +353,20 @@ console.log("reporte",reporte)
                 className="disabled:opacity-60 disabled:cursor-not-allowed"
               />
             </td>
-            <td className="p-3">
+            <td className="p-3 text-center">
               {dayjs(sabado.fecha).format('DD/MM/YYYY')}
             
             {/* {new Date(
             sabado.fecha
             ).toLocaleDateString()} */}
             </td>
-            <td className="p-3">
+            <td className="p-3 text-center">
               {sabado.estado}
             </td>
-            <td className="p-3">
+            <td className="p-3 text-center">
               {sabado.horasTotales} 
             </td>
-            <td className="p-3">
+            <td className="p-3 text-center">
               {sabado.presentado}
             </td>
 
