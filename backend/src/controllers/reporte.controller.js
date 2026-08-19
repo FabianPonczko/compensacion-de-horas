@@ -411,9 +411,7 @@ export const obtenerResumen =
       // ==========================================
 
       res.json({
-        registros:
-          registros,
-
+        
         totalRegistros:
           registros.length,
 
@@ -430,7 +428,7 @@ export const obtenerResumen =
         proximosSabados,
 
         ultimosRegistros,
-
+        
       });
     } catch (error) {
       console.error(error);
