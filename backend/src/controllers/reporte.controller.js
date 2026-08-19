@@ -427,6 +427,8 @@ export const obtenerResumen =
         proximosSabados,
 
         ultimosRegistros,
+
+        presentado:sabadoAsignado.presentado
       });
     } catch (error) {
       console.error(error);

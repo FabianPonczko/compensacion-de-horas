@@ -22,7 +22,7 @@ export default function Dashboard() {
   useEffect(() => {
     cargarDashboard();
   }, []);
-
+  console.log("data: ",data)
   const cargarDashboard =
     async () => {
       try {
