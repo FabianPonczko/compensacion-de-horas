@@ -428,7 +428,6 @@ export const obtenerResumen =
 
         ultimosRegistros,
 
-        presentado: sabadoAsignado
       });
     } catch (error) {
       console.error(error);
