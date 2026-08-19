@@ -428,7 +428,7 @@ export const obtenerResumen =
 
         ultimosRegistros,
 
-        presentado:sabadoAsignado.presentado
+        presentado: sabadoAsignado
       });
     } catch (error) {
       console.error(error);
