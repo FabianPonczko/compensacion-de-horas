@@ -411,6 +411,9 @@ export const obtenerResumen =
       // ==========================================
 
       res.json({
+        registros:
+          registros,
+
         totalRegistros:
           registros.length,
 
